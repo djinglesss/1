@@ -31,7 +31,7 @@ services:
   db:
     image: couchdb:2.3.0
     volumes:
-      - db-data:/opt/couchdb/data
+      - /swarm/volumes/swarmpit/db:/opt/couchdb/data
     networks:
       - swarmpit-net
     deploy:
@@ -42,13 +42,10 @@ services:
         reservations:
           cpus: '0.15'
           memory: 128M
-      placement:
-        constraints:
-          - node.labels.db == true
   influxdb:
     image: influxdb:1.7
     volumes:
-      - influx-data:/var/lib/influxdb
+      - /swarm/volumes/swarmpit/influxdb:/var/lib/influxdb
     networks:
       - swarmpit-net
     deploy:
@@ -59,9 +56,6 @@ services:
         reservations:
           cpus: '0.30'
           memory: 128M
-      placement:
-        constraints:
-          - node.labels.db == true
   agent:
     image: swarmpit/agent:latest
     environment:
